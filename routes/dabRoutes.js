@@ -15,7 +15,7 @@ router.post('/', (req, res) => {
     const inputCountry = req.body.inputCountry; // Récupérer la devise
 
     const result = processData({ inputPrice, inputCountry }); // Traiter les données
-    res.render('dab', { result }); // Retourner les résultats dans la vue
+    res.render('dab', { result, user: req.user }); // Retourner les résultats dans la vue
 });
 
 

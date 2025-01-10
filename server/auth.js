@@ -63,7 +63,7 @@ export function generateToken(user) {
 export function requireAuth(req, res, next) {
     const token = req.cookies?.auth_token;
     if (!token) {
-        return res.status(401).json({ error: 'Accès non autorisé' });
+        res.status(401).render('error/401', { title: 'Accès refusée' });
     }
 
     try {
@@ -71,7 +71,7 @@ export function requireAuth(req, res, next) {
         req.user = decoded;
         next();
     } catch (err) {
-        return res.status(403).json({ error: 'Token invalide ou expiré' });
+        res.status(403).render('error/403', { title: 'Accès refusée' });
     }
 }
 
@@ -106,7 +106,7 @@ export async function attachUser(req, res, next) {
 export function requireRole(roles) {
     return (req, res, next) => {
         if (!roles.includes(req.user?.role)) {
-            return res.status(403).json({ error: 'Accès refusé' });
+            res.status(403).render('error/403', { title: 'Accès refusée' });
         }
         next();
     };

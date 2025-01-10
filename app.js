@@ -25,7 +25,7 @@ const server = http.createServer(app); // Créez un serveur HTTP
 const io = new Server(server);
 
 // Configuration de base
-const PORT = process.env.PORT || 3000;
+const PORT = 8080;
 
 // Middleware pour gérer les fichiers statiques (CSS, JS, images, etc.)
 app.use(express.static(path.join(path.resolve(), 'public')));
@@ -49,20 +49,20 @@ app.use('/dab', dabRoutes);
 
 app.use('/auth', authRoutes);
 
-// Gestion des erreurs 404
+// Gestion des erreurs
 app.use((req, res) => {
-    res.status(404).render('404', { title: 'Page non trouvée' });
+    res.status(401).render('error/401', { title: 'Accès non autorisé' });
+});
+app.use((req, res) => {
+    res.status(403).render('error/403', { title: 'Accès refusée' });
+});
+
+app.use((req, res) => {
+    res.status(404).render('error/404', { title: 'Page non trouvée' });
 });
 
 
-
-
-
-
-    socketServ(io);
-
-
-
+socketServ(io);
 
 // Lancer le serveur
 server.listen(PORT, () => {
