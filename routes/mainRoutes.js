@@ -10,6 +10,7 @@ router.get('/', (req, res) => {
 
 // Exemple de route supplémentaire
 router.get('/about', (req, res) => {
+    console.log(req.user.Prenom);
     res.render('about', { title: 'À propos', user: req.user });
 });
 

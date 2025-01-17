@@ -8,6 +8,9 @@ const messagesDiv = document.getElementById('messages');
 // Écouter les messages du serveur
 socket.on('chatMessage', (msg) => {
     const messageElement = document.createElement('div');
+    messageElement.style.marginBottom = '10px';
+    messageElement.style.display = 'flex';
+    messageElement.style.justifyContent = 'space-between';
     const textElement = document.createElement('span');
     const userElement = document.createElement('strong');
     const timeElement = document.createElement('time');
@@ -26,6 +29,7 @@ socket.on('chatMessage', (msg) => {
     const formattedDate = utcDate.toLocaleString('fr-FR', options);
 
 
+    console.log(msg.time);
 
     switch (msg.type) {
         case 'system':

@@ -1,13 +1,12 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<%- include('components/head') %>
+
     <title>Chat en Direct</title>
     <link rel="stylesheet" href="/styles/chat.css">
 </head>
 <body>
+    
     <header>
+        <%- include('components/navbar') %>
         <h1>Bienvenue au chat en direct, <%= user ? user.Prenom : 'Invité' %> !</h1>
     </header>
 

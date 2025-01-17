@@ -30,11 +30,12 @@ export default function socketServ(io) {
                 socket.disconnect(); // Déconnectez le socket en cas d'erreur
             });
 
+            let msg = 'Utilisateur connecté';
+            let time = new Date().toUTCString();
 
-            const message = { user: socket.user, text: 'Utilisateur connecté', time: new Date().toISOString, type: 'system'};
+            const message = { user: socket.user, text: msg, time: time, type: 'system'};
             io.emit('chatMessage', message);
 
-            console.log(`Utilisateur connecté : ${socket.user.Prenom} ${socket.user.Nom}`);
         } catch (err) {
             console.error('Token invalide ou expiré :', err.message);
             socket.disconnect();
@@ -43,10 +44,11 @@ export default function socketServ(io) {
 
         // Écoute des messages envoyés par le client
         socket.on('chatMessage', (msg) => {
-            console.log(`Message reçu de ${socket.user.id} : ${msg}`);
+
+            let time = new Date().toUTCString();
 
             // Ajoutez le nom d'utilisateur dans le message
-            const message = { user: socket.user, text: msg, time: new Date().toISOString(), type: 'user' }; // Associer le rôle au message (ou utilisez un champ nom)
+            const message = { user: socket.user, text: msg, time: time, type: 'user' }; // Associer le rôle au message (ou utilisez un champ nom)
             io.emit('chatMessage', message);
         });
 

@@ -60,7 +60,7 @@ export function generateToken(user) {
 
 
 // Middleware pour protéger les routes
-export function requireAuth(req, res, next) {
+export async function requireAuth(req, res, next) {
     const token = req.cookies?.auth_token;
     if (!token) {
         res.status(401).render('error/401', { title: 'Accès refusée' });
@@ -68,7 +68,15 @@ export function requireAuth(req, res, next) {
 
     try {
         const decoded = jwt.verify(token, secretKey);
-        req.user = decoded;
+        const user = await Comptes.findOne({ where: { ID_Compte: decoded.id } });
+
+        if (!user) {
+            req.user = null;
+            return next();
+        }
+
+        user.role = decoded.role;
+        req.user = user;
         next();
     } catch (err) {
         res.status(403).render('error/403', { title: 'Accès refusée' });
@@ -92,7 +100,7 @@ export async function attachUser(req, res, next) {
             return next();
         }
 
-        user.role = decoded.role; // Le rôle est déjà inclus dans le token
+        user.role = decoded.role;
         req.user = user;
     } catch (err) {
         console.error('Erreur lors de la vérification du token :', err);
