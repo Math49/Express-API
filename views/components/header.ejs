@@ -1,0 +1,50 @@
+<header>
+    <div class="h-[80px] flex justify-between items-center bg-[#FBE9B1] px-[100px]">
+        <div class="flex items-center gap-4">
+            <img 
+                class="w-12 h-12"
+                src="/static/images/logos/logo.png"
+                alt="Logo de Conf&Co"
+            >
+            <p class="text-3xl font-black text-[#030301]">Conf&Co</p>
+        </div>
+        <nav class="h-full">
+            <div class="flex items-center gap-[20px] text-xl font-semibold h-full">
+                <a class="px-[20px] py-[10px] flex items-center hover:bg-[#EAAED6] rounded-xl" href="/">
+                    Accueil
+                </a>
+                <a class="px-[20px] py-[10px] flex items-center hover:bg-[#EAAED6] rounded-xl" href="/about">
+                    À propos
+                </a>
+                <a class="px-[20px] py-[10px] flex items-center hover:bg-[#EAAED6] rounded-xl" href="/tchat">
+                    Chat
+                </a>
+                <a class="px-[20px] py-[10px] flex items-center hover:bg-[#EAAED6] rounded-xl" href="/dab">
+                    Formulaire
+                </a>
+
+                <% if (user) { %>
+                    <div class="relative group">
+                        <a href="" class="px-[20px] py-[10px] flex items-center hover:text-[#EAAED6] text-[30px]">
+                            <i class="fa-solid fa-circle-user"></i>
+                        </a>
+                        <div class="absolute hidden group-hover:block bg-white shadow-lg rounded-md overflow-hidden">
+                            <a class="px-[20px] py-[10px] flex items-center hover:bg-[#EAAED6]" href="/profil">
+                                Profil
+                            </a>
+                            <a class="px-[20px] py-[10px] flex items-center hover:bg-[#EAAED6]" href="/logout">
+                                Déconnexion
+                            </a>
+
+                    </div>
+                <% } else { %>
+
+                    <a class="px-[20px] py-[10px] flex items-center hover:bg-[#EAAED6] rounded-xl" href="/auth/">
+                        Connexion
+                    </a>
+
+                <% } %>
+                </div>
+        </nav>
+    </div>
+</header>

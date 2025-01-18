@@ -3,11 +3,11 @@ import path from 'path';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import http from 'http';
-import dbConnect from './server/dbConnect_Serv.js';
+import dbConnect from './server/dbConnectServ.js';
 
 //import routes (/routes/)
-import mainRoutes from './routes/main_Route.js';
-
+import mainRoutes from './routes/mainRoute.js';
+import errorRoutes from './routes/errorRoutes.js';
 
 // Initialiser l'application
 const app = express();
@@ -18,7 +18,7 @@ const server = http.createServer(app);
 const PORT = 8080;
 
 // Middleware pour gérer les fichiers statiques (CSS, JS, images, etc.)
-app.use(express.static(path.join(path.resolve(), 'public')));
+app.use('/static', express.static(path.join(path.resolve(), 'public')));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -32,16 +32,38 @@ dbConnect();
 //routes
 app.use('/', mainRoutes);
 
-// Gestion des erreurs
-app.use((req, res) => {
-    res.status(401).render('error/401', { title: 'Accès non autorisé' });
-});
-app.use((req, res) => {
-    res.status(403).render('error/403', { title: 'Accès refusée' });
+
+app.use('/error', errorRoutes);
+
+app.use((err, req, res, next) => {
+    if (err.status === 401) {
+        res.redirect('/error/401');
+    } else if (err.status === 403) {
+        res.redirect('/error/403');
+    } else if (err.status === 404) {
+        res.redirect('/error/404');
+    } else if (err.status === 500) {
+        res.redirect('/error/500');
+    }else {
+        next(err);
+    }
 });
 
 app.use((req, res) => {
-    res.status(404).render('error/404', { title: 'Page non trouvée' });
+    res.redirect('/error/404');
+});
+
+
+// Gestion des erreurs
+// app.use((req, res) => {
+//     res.status(401).render('error/401', { title: 'Accès non autorisé', user: req.user });
+// });
+// app.use((req, res) => {
+//     res.status(403).render('error/403', { title: 'Accès refusée', user: req.user });
+// });
+
+app.use((req, res) => {
+    res.status(404).render('error/404', { title: 'Page non trouvée', user: req.user });
 });
 
 // Lancer le serveur
