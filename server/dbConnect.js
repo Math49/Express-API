@@ -4,18 +4,18 @@ dotenv.config();
 
 
 const sequelize = new Sequelize(
-    process.env.DB_DATABASE,       // Nom de la base de données
-    process.env.DB_USER,           // Nom d'utilisateur
-    process.env.DB_PASSWORD,       // Mot de passe
+    process.env.DB_DATABASE,
+    process.env.DB_USER,
+    process.env.DB_PASSWORD,
     {
-        host: process.env.DB_HOST, // Hôte ou serveur
-        port: parseInt(process.env.DB_PORT, 10), // Port SQL Server
-        dialect: process.env.DB_DIALECT || 'mssql',       // Dialecte : mssql
+        host: process.env.DB_HOST,
+        port: parseInt(process.env.DB_PORT, 10),
+        dialect: process.env.DB_DIALECT || 'mssql',
         dialectOptions: {
-            instanceName: process.env.DB_INSTANCE, // Instance nommée (ex. SQLEXPRESS)
+            instanceName: process.env.DB_INSTANCE,
             options: {
-                encrypt: process.env.DB_ENCRYPT === 'true', // Chiffrement des données
-                trustServerCertificate: process.env.DB_TRUST_CERTIFICATE === 'true', // Ignorer les problèmes de certificat
+                encrypt: process.env.DB_ENCRYPT === 'true',
+                trustServerCertificate: process.env.DB_TRUST_CERTIFICATE === 'true',
             },
         },
         logging: false,

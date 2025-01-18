@@ -1,0 +1,44 @@
+<nav>
+    <ul>
+        <li><a href="/">Accueil</a></li>
+        <li><a href="/about">À propos</a></li>
+        <li><a href="/tchat">Chat</a></li>
+        <li><a href="/dab">Formulaire</a></li>
+        <% if (user) { %>
+            <li><a href="/auth/logout" id="logout">Déconnexion</a></li>
+            <li id="user">Bienvenue, <%= user.Prenom %> <%= user.Nom %>!</li>
+        <% } else { %>
+            <li><a href="/auth/">Connexion</a></li>
+        <% } %>
+    </ul>
+</nav>
+
+<style>
+    /* Style de base pour la barre de navigation */
+    nav {
+        background-color: #333;
+        overflow: hidden;
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem 1rem;
+    }
+    nav a {
+        color: white;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        display: block;
+    }
+    nav a:hover {
+        background-color: #575757;
+    }
+    nav .menu {
+        display: flex;
+    }
+
+    nav #user {
+        color: rgb(13, 247, 208);
+        padding: 0.5rem 1rem;
+        list-style: none;
+        font-weight: 800;
+    }
+</style>

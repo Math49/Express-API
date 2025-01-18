@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize';
-import {sequelize} from '../../server/dbConnect.js';
+import {sequelize} from '../../../server/dbConnect.js';
 
 const Comptes = sequelize.define('Utilisateurs.Comptes', {
     ID_Compte: {
@@ -31,11 +31,12 @@ const Comptes = sequelize.define('Utilisateurs.Comptes', {
     IsDeleted: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
+        allowNull: false,
     },
 },
 {
-    schema: 'Utilisateurs', // Spécifiez le schéma ici
-    tableName: 'Comptes',   // Nom de la table
+    schema: 'Utilisateurs',
+    tableName: 'Comptes',
     timestamps: false,
 });
 
