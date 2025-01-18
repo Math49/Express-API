@@ -1,5 +1,4 @@
 import { DataTypes } from 'sequelize';
-import {sequelize} from '../../../server/dbConnect.js';
 
 const Article = sequelize.define('Boutique.Article', {
     ID_Produit: {

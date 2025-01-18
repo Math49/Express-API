@@ -1,13 +1,12 @@
 import express from 'express';
 import path from 'path';
-import dbConnect from './server/dbConnect.js';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import http from 'http';
-
+import dbConnect from './server/dbConnect_Serv.js';
 
 //import routes (/routes/)
-import mainRoutes from './routes/mainRoutes.js';
+import mainRoutes from './routes/main_Route.js';
 
 
 // Initialiser l'application

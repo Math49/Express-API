@@ -1,5 +1,4 @@
 import { DataTypes } from 'sequelize';
-import {sequelize} from '../../../server/dbConnect.js';
 
 const Comptes = sequelize.define('Utilisateurs.Comptes', {
     ID_Compte: {
