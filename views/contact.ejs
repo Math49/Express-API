@@ -1,0 +1,45 @@
+<%- include('components/head') %>
+
+    <title>Contact</title>
+
+</head>
+<body>
+    <%- include('components/header') %>
+
+    
+    <div class="separator bg-gradient-ypt"></div>
+    
+    <div class="flex flex-col items-center justify-center h-[50vh] p-[3%] mt-4">
+        <h1 class="text-4xl font-bold mb-4">Contactez nous</h1>
+        <form class="w-full max-w-lg" id="contactForm">
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
+                    Nom
+                </label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text" name="name" placeholder="Votre nom">
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+                    Email
+                </label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" name="email" placeholder="Votre email">
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="message">
+                    Message
+                </label>
+                <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="message" name="message" placeholder="Votre message"></textarea>
+            </div>
+            <div class="flex items-center justify-between">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                    Send
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="separator"></div>
+
+    <%- include('components/footer') %>
+    <script src="/static/script/contactScript.js"></script>
+</body>
+</html>
