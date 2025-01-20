@@ -1,0 +1,58 @@
+<%- include('../components/head') %>
+
+    <title>Boutique</title>
+
+    <link rel="stylesheet" href="/static/styles/boutique.css">
+
+</head>
+<body>
+    <%- include('../components/header') %>
+
+    <div class="flex flex-col items-center justify-center h-[50vh] p-[3%] bg-gradient-ypt">
+        <h1 class="text-[60px] font-black text-[#F5F5F5]">Boutique</h1>
+        <p class="text-xl font-medium text-center">Trouvez vos confiseries préférées !</p>
+    </div>
+    <div class="separator"></div>
+
+    <div class="flex">
+        <!-- Barre de filtres -->
+        <div class="sticky-sidebar w-[20vw] p-4 bg-white shadow-lg">
+            <h2 class="text-xl font-bold mb-4">Filtres</h2>
+
+            <!-- Recherche -->
+            <div class="mb-4">
+                <label for="searchLabel" class="font-semibold">Recherche par nom :</label>
+                <input type="text" id="searchLabel" class="w-full border p-2 rounded" placeholder="Rechercher...">
+            </div>
+            
+            <!-- Intervalle de prix -->
+            <div class="mb-4">
+                <label class="font-semibold">Plage de prix :</label>
+                <div class="flex items-center gap-2">
+                    <input type="number" id="minPrice" class="border p-2 rounded w-full" placeholder="Min">
+                    <input type="number" id="maxPrice" class="border p-2 rounded w-full" placeholder="Max">
+                </div>
+            </div>
+
+            <!-- Marques -->
+            <div class="mb-4">
+                <label class="font-semibold">Marques :</label>
+                <div id="brandCheckboxes" class="mt-2">
+                    <!-- Les checkboxes seront générées dynamiquement -->
+                </div>
+            </div>
+
+
+        </div>
+
+        <!-- Liste des produits -->
+        <div id="produits" class="flex flex-wrap justify-between gap-y-4 px-[5vw] w-[80vw]">
+            <!-- Les produits seront affichés ici -->
+        </div>
+    </div>
+
+    <div class="separator"></div>
+    <%- include('../components/footer') %>
+    <script src="/static/script/boutiqueScript.js"></script>
+</body>
+</html>

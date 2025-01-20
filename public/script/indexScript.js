@@ -10,14 +10,12 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!response.ok) {
             throw new Error('Erreur lors de la récupération des produits');
         }
-        return response.json(); // Les données JSON retournées par le serveur
+        return response.json();
     })
     .then(data => {
-        console.log('Produits récupérés :', data);
 
         // Afficher les données sur la page
         const produitsDiv = document.getElementById('produits');
-        //seulement les 5 prem
 
         data = data.slice(0,4);
 

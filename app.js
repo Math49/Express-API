@@ -8,6 +8,7 @@ import dbConnect from './server/dbConnectServ.js';
 //import routes (/routes/)
 import mainRoutes from './routes/mainRoute.js';
 import errorRoutes from './routes/errorRoutes.js';
+import boutiqueRoutes from './routes/boutiqueRoutes.js';
 
 //import routes API (/routes/API/)
 import produitRoutes from './routes/API/produitRoutes.js';
@@ -38,6 +39,7 @@ app.use('/api', produitRoutes);
 //routes
 app.use('/', mainRoutes);
 
+app.use('/boutique', boutiqueRoutes);
 
 app.use('/error', errorRoutes);
 
