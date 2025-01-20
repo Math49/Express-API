@@ -1,13 +1,27 @@
 <%- include('components/head') %>
 
     <title>Accueil</title>
-    
+    <link rel="stylesheet" href="/static/styles/index.css">
+
 </head>
 <body>
     <%- include('components/header') %>
 
-    <h1>Bienvenue sur ma page d'accueil</h1>
-    <p>Cliquez sur le menu pour naviguer vers le formulaire ou d'autres pages.</p>
+    <div class="flex flex-col items-center justify-center h-[50vh] p-[3%] bg-gradient-ypt">
+        <h1 class="text-[60px] font-black text-[#F5F5F5]">Bienvenue !</h1>
+        <p class="text-xl font-medium text-center">Venez trouver votre bonheur sur le <span class="underline-yellow">meilleur E-commerce de confiserie</span> de l'univers !</p>
+    </div>
+    <div class="separator"></div>
+    <div>
+        <h2 class="text-3xl font-bold"><i class="fa-regular fa-hand-point-right"></i> Nos meilleurs produits</h2>
+        <div class="h-[5vh]"></div>
+        <div id="produits" class="flex justify-between px-[5vw]">
+            
+        </div>
+    </div>
+    <div class="separator"></div>
 
+    <%- include('components/footer') %>
+    <script src="/static/script/indexScript.js"></script>
 </body>
 </html>

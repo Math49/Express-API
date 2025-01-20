@@ -9,6 +9,9 @@ import dbConnect from './server/dbConnectServ.js';
 import mainRoutes from './routes/mainRoute.js';
 import errorRoutes from './routes/errorRoutes.js';
 
+//import routes API (/routes/API/)
+import produitRoutes from './routes/API/produitRoutes.js';
+
 // Initialiser l'application
 const app = express();
 app.use(cors());
@@ -28,6 +31,9 @@ app.set('views', path.join(path.resolve(), 'views'));
 
 // Connexion à la base de données
 dbConnect();
+
+// routes API
+app.use('/api', produitRoutes);
 
 //routes
 app.use('/', mainRoutes);
