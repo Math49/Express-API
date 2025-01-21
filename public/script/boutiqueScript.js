@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <div class="h-[40vh] w-[20vw] bg-white m-2 rounded-lg shadow-lg overflow-hidden">
                 <div class="bg-bonbon h-[20vh]"></div>
                 <div class="p-3 flex flex-col justify-between gap-2">
-                    <h2 class="text-[20px] font-semibold underline-pink">${produit.Label}</h2>
+                    <a href="/boutique/${produit.ID_Produit}"><h2 class="text-[20px] font-semibold underline-pink">${produit.Label}</h2></a>
                     <p class="opacity-75">${produit.Marque}</p>
                     <p class="text-xl font-bold underline-yellow w-full text-end">${produit.Prix_HT}€</p>
                 </div>
