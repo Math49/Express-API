@@ -128,7 +128,6 @@ export async function attachUser(req, res, next) {
             tel: user.Telephone,
         };
     } catch (err) {
-        console.error('Erreur lors de la vérification du token :', err);
         req.user = null; // Token invalide ou expiré
     }
 
