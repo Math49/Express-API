@@ -1,4 +1,5 @@
 import { DataTypes } from 'sequelize';
+import { sequelize } from '../../../server/dbConnectServ.js';
 
 const Taxes = sequelize.define('Boutique.Taxes', {
     ID_Taxes: {

@@ -1,4 +1,5 @@
 import { DataTypes } from 'sequelize';
+import { sequelize } from '../../../server/dbConnectServ.js';
 
 export const Administrateur = sequelize.define('Administrateur', {
     ID_Compte: {
