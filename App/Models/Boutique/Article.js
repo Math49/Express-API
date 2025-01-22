@@ -5,7 +5,6 @@ const Article = sequelize.define('Boutique.Article', {
     ID_Produit: {
         type: DataTypes.INTEGER,
         foreignKey: true,
-        autoIncrement: true,
     },
     ID_Commande: {
         type: DataTypes.INTEGER,

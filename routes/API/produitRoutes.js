@@ -1,7 +1,6 @@
 import express from 'express';
-import Produits from '../../app/Models/Boutique/Produits.js';
-import Commentaire from '../../app/Models/Boutique/Commentaire.js';
 import Comptes from '../../App/Models/Utilisateurs/Comptes.js';
+import { requireRole } from '../../server/authServ.js';
 
 const router = express.Router();
 
@@ -88,6 +87,24 @@ router.post('/produits/:ID_Produit/commentaires', async (req, res) => {
         res.status(201).json(nouveauCommentaire);
     } catch (error) {
         console.error('Erreur lors de la création du commentaire :', error);
+        res.status(500).json({ error: 'Erreur interne du serveur' });
+    }
+});
+
+router.delete('/commentaires/:id',requireRole("Administrateurs"), async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const commentaire = await Commentaire.findByPk(id);
+
+        if (!commentaire) {
+            return res.status(404).json({ error: 'Commentaire non trouvé' });
+        }
+
+        await commentaire.destroy();
+        res.status(200).json({ message: 'Commentaire supprimé avec succès' });
+    } catch (error) {
+        console.error('Erreur lors de la suppression du commentaire :', error);
         res.status(500).json({ error: 'Erreur interne du serveur' });
     }
 });

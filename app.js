@@ -16,6 +16,14 @@ import authRoutes from './routes/authRoutes.js';
 import produitRoutes from './routes/API/produitRoutes.js';
 import authApiRoutes from './routes/API/authApiRoutes.js';
 
+import userRoutes from './routes/API/userApiRoutes.js';
+import productRoutes from './routes/API/productApiRoutes.js';
+import orderRoutes from './routes/API/orderApiRoutes.js';
+import deliveryTourRoutes from './routes/API/deliveryTourApiRoutes.js';
+import commentRoutes from './routes/API/commentApiRoutes.js';
+import messageRoutes from './routes/API/messageApiRoutes.js';
+import assignmentRequestRoutes from './routes/API/assignmentRequestApiRoutes.js';
+
 // Initialiser l'application
 const app = express();
 app.use(cors());
@@ -41,6 +49,13 @@ dbConnect();
 // routes API
 app.use('/api', produitRoutes);
 app.use('/api', authApiRoutes);
+app.use('/api', userRoutes);
+app.use('/api', productRoutes);
+app.use('/api', orderRoutes);
+app.use('/api', deliveryTourRoutes);
+app.use('/api', commentRoutes);
+app.use('/api', messageRoutes);
+app.use('/api', assignmentRequestRoutes);
 
 //routes
 app.use('/', mainRoutes);
