@@ -38,7 +38,7 @@ router.get('/orders', async (req, res) => {
     try {
         const orders = await Commandes.findAll();
 
-        for (order of orders) {
+        for (const order of orders) {
             const articles = await Article.findAll({where: {ID_Commande: order.ID_Commande}});
             order.dataValues.articles = articles;
         }
@@ -74,10 +74,26 @@ router.put('/orders/:id', async (req, res) => {
     const { id } = req.params;
     try {
         const order = await Commandes.findByPk(id);
+        const articlesAll = await Article.findAll({where: {ID_Commande: order.ID_Commande}});
         if (!order) {
             return res.status(404).json({ error: 'Commande non trouvée' });
         }
-        await order.update(req.body);
+        await order.update({
+            num_Commande: req.body.num_Commande,
+            ID_Client: req.body.ID_Client,
+            Volume: req.body.Volume,
+            Prix_Paye: req.body.Prix,
+            ID_Livraison: req.body.ID_Livraison,
+        });
+
+        const articles = req.body.articles;
+
+        for (const article of articlesAll) {
+            if (!articles.some(a => a.ID_Article === article.ID_Article)) {
+                await article.destroy();
+            }
+        }
+
         res.status(200).json(order);
     } catch (error) {
         console.error('Erreur lors de la mise à jour de la commande :', error);
@@ -97,7 +113,7 @@ router.delete('/orders/:id', async (req, res) => {
             return res.status(404).json({ error: 'Commande non trouvée' });
         }
         
-        for (article of articles) {
+        for (const article of articles) {
             await article.destroy();
         }
         await order.destroy();

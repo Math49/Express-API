@@ -2,7 +2,7 @@ import { DataTypes } from 'sequelize';
 import { sequelize } from '../../../server/dbConnectServ.js';
 
 const Commentaire = sequelize.define('Boutique.Commentaire', {
-    id: {
+    ID_Commentaire: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
@@ -42,6 +42,5 @@ const Commentaire = sequelize.define('Boutique.Commentaire', {
     
 });
 
-Commentaire.removeAttribute('id');
 
 export default Commentaire;

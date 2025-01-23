@@ -1,5 +1,6 @@
 import express from 'express';
 import Demande_Affectation from '../../App/Models/Logistique/Demande_Affectation.js';
+import { Fournisseur } from '../../App/Models/Utilisateurs/Roles.js';
 
 const router = express.Router();
 
@@ -34,10 +35,10 @@ router.get('/assignment-requests', async (req, res) => {
 });
 
 // GET - /assignment-requests/:id
-router.get('/assignment-requests/:id', async (req, res) => {
+router.get('/assignment-requests/:id_Commercial/:id_Fournisseur', async (req, res) => {
     try {
-        const ID_Fournisseur = req.body.ID_Fournisseur;
-        const ID_Commercial = req.body.ID_Commercial;
+        const ID_Fournisseur = req.params.id_Fournisseur;
+        const ID_Commercial = req.params.id_Commercial;
 
         const request = await Demande_Affectation.findOne({
             where: {
@@ -56,14 +57,24 @@ router.get('/assignment-requests/:id', async (req, res) => {
 });
 
 // PUT - /assignment-requests/:id
-router.put('/assignment-requests/:id', async (req, res) => {
-    const { id } = req.params;
+router.put('/assignment-requests/:id_Commercial/:id_Fournisseur', async (req, res) => {
+    const ID_Fournisseur = req.params.id_Fournisseur;
+    const ID_Commercial = req.params.id_Commercial;
     try {
-        const request = await Demande_Affectation.findByPk(id);
+        const request = await Demande_Affectation.findOne({
+            where: {
+                ID_Fournisseur:ID_Fournisseur,
+                ID_Commercial:ID_Commercial,
+            }
+        });
+
         if (!request) {
             return res.status(404).json({ error: 'Demande d\'affectation non trouvée' });
         }
-        await request.update(req.body);
+        await request.update({
+            ID_Fournisseur: req.body.ID_Fournisseur,
+            ID_Commercial: req.body.ID_Commercial,
+        });
         res.status(200).json(request);
     } catch (error) {
         console.error('Erreur lors de la mise à jour de la demande d\'affectation :', error);
@@ -91,6 +102,44 @@ router.delete('/assignment-requests', async (req, res) => {
         res.status(200).json({ message: 'Demande d\'affectation supprimée avec succès' });
     } catch (error) {
         console.error('Erreur lors de la suppression de la demande d\'affectation :', error);
+        res.status(500).json({ error: 'Erreur interne du serveur' });
+    }
+});
+
+
+router.push('/accept-assignment-requests/:id_Commercial/:id_Fournisseur', async (req, res) => {
+
+    const ID_Fournisseur = req.params.id_Fournisseur;
+    const ID_Commercial = req.params.id_Commercial;
+
+    try {
+    
+        const request = await Demande_Affectation.findOne({
+            where: {
+                ID_Fournisseur:ID_Fournisseur,
+                ID_Commercial:ID_Commercial,
+            }
+        });
+
+        if (!request) {
+            return res.status(404).json({ error: 'Demande d\'affectation non trouvée' });
+        }
+        const rqtFournisseur = await Fournisseur.findOne({
+            where: {
+                ID_Fournisseur:ID_Fournisseur,
+            }
+        });
+        if (!rqtFournisseur) {
+            return res.status(404).json({ error: 'Fournisseur non trouvé' });
+        }
+
+        await rqtFournisseur.update({
+            ID_Commercial: ID_Commercial,
+        });
+        await request.destroy();
+        res.status(200).json({ message: 'Demande d\'affectation acceptée avec succès' });
+    } catch (error) {
+        console.error('Erreur lors de l\'acceptation de la demande d\'affectation :', error);
         res.status(500).json({ error: 'Erreur interne du serveur' });
     }
 });

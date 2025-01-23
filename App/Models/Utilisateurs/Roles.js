@@ -17,9 +17,17 @@ export const Administrateur = sequelize.define('Administrateur', {
 });
 
 export const Client = sequelize.define('Client', {
-    ID_Compte: {
+    ID_Client: {
         type: DataTypes.INTEGER,
         primaryKey: true,
+    },
+    Adresse:{
+        type: DataTypes.GEOGRAPHY,
+        allowNull: false,
+    },
+    ID_Compte: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
     },
     isDeleted: {
         type: DataTypes.BOOLEAN,
@@ -32,9 +40,13 @@ export const Client = sequelize.define('Client', {
 });
 
 export const Commercial = sequelize.define('Commercial', {
-    ID_Compte: {
+    ID_Commercial: {
         type: DataTypes.INTEGER,
         primaryKey: true,
+    },
+    ID_Compte: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
     },
     isDeleted: {
         type: DataTypes.BOOLEAN,
@@ -47,9 +59,21 @@ export const Commercial = sequelize.define('Commercial', {
 });
 
 export const Fournisseur = sequelize.define('Fournisseur', {
-    ID_Compte: {
+    ID_Fournisseur: {
         type: DataTypes.INTEGER,
         primaryKey: true,
+    },
+    Entreprise: {
+        type: DataTypes.STRING(50),
+        allowNull: false,
+    },
+    ID_Commercial: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    ID_Compte: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
     },
     isDeleted: {
         type: DataTypes.BOOLEAN,
@@ -62,9 +86,25 @@ export const Fournisseur = sequelize.define('Fournisseur', {
 });
 
 export const Livreur = sequelize.define('Livreur', {
-    ID_Compte: {
+    ID_Livreur: {
         type: DataTypes.INTEGER,
         primaryKey: true,
+    },
+    Secteur: {
+        type: DataTypes.GEOGRAPHY,
+        allowNull: false,
+    },
+    Capacite: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    ID_RespLogi: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    ID_Compte: {
+        type: DataTypes.INTEGER,
+        allowNull
     },
     isDeleted: {
         type: DataTypes.BOOLEAN,
@@ -77,9 +117,17 @@ export const Livreur = sequelize.define('Livreur', {
 });
 
 export const ResponsableLogistique = sequelize.define('ResponsableLogistique', {
-    ID_Compte: {
+    ID_RespLogi: {
         type: DataTypes.INTEGER,
         primaryKey: true,
+    },
+    Secteur: {
+        type: DataTypes.GEOGRAPHY,
+        allowNull: false,
+    },
+    ID_Compte: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
     },
     isDeleted: {
         type: DataTypes.BOOLEAN,

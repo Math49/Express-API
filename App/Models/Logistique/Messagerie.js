@@ -2,6 +2,11 @@ import { DataTypes } from 'sequelize';
 import { sequelize } from '../../../server/dbConnectServ.js';
 
 const Messagerie = sequelize.define('Logistique.Messagerie', {
+    ID_Message: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
     ID_Fournisseur: {
         type: DataTypes.INTEGER,
         foreignKey: true,

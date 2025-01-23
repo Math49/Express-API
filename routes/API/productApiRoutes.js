@@ -1,6 +1,6 @@
 import express from 'express';
 import Produits from '../../App/Models/Boutique/Produits.js';
-
+import Stock from '../../App/Models/Logistique/Stock.js';
 const router = express.Router();
 
 // POST - /products
@@ -13,6 +13,8 @@ router.post('/products', async (req, res) => {
         const poids = req.body.poids;
         const description = req.body.description;
         const taxes = 1;
+        const Quantite = req.body.Stock;
+        const ID_Fournisseur = req.body.ID_Fournisseur;
 
         const product = await Produits.create({
             label,
@@ -22,6 +24,13 @@ router.post('/products', async (req, res) => {
             description,
             taxes,
         });
+
+        const Stock = await Stock.create({
+            ID_Produit: product.ID_Produit,
+            quantite: Quantite && Quantite > 0 ? Quantite : 0,
+            ID_Fournisseur
+        });
+
         res.status(201).json(product);
     } catch (error) {
         console.error('Erreur lors de la création du produit :', error);
@@ -34,6 +43,11 @@ router.get('/products', async (req, res) => {
     try {
         const produits = await Produits.findAll();
         const accept = req.headers.accept;
+
+        for (const produit of produits) {
+            const stock = await Stock.findOne({ where: { ID_Produit: produit.ID_Produit } });
+            produit.dataValues.stock = stock ? stock.quantite : 0;
+        }
 
         if (accept.includes('application/json')) {
             res.status(200).json(produits);
@@ -56,6 +70,9 @@ router.get('/products/:id', async (req, res) => {
         if (!produit) {
             return res.status(404).json({ error: 'Produit non trouvé' });
         }
+
+        const stock = await Stock.findOne({ where: { ID_Produit: produit.ID_Produit } });
+        produit.dataValues.stock = stock ? stock.quantite : 0;
 
         const accept = req.headers.accept;
 
@@ -80,6 +97,7 @@ router.put('/products/:id', async (req, res) => {
         const prix = req.body.prix;
         const poids = req.body.poids;
         const description = req.body.description;
+        const quantite = req.body.stock;
         const taxes = 1;
 
         const product = await Produits.findByPk(id);
@@ -94,6 +112,12 @@ router.put('/products/:id', async (req, res) => {
             description,
             taxes,
         });
+
+        const stock = await Stock.findOne({ where: { ID_Produit: product.ID_Produit } });
+        await stock.update({
+            Quantite: quantite,
+        });
+
         res.status(200).json(product);
     } catch (error) {
         console.error('Erreur lors de la mise à jour du produit :', error);
@@ -109,6 +133,7 @@ router.delete('/products/:id', async (req, res) => {
         if (!product) {
             return res.status(404).json({ error: 'Produit non trouvé' });
         }
+        await Stock.destroy({ where: { ID_Produit: product.ID_Produit } });
         await product.destroy();
         res.status(200).json({ message: 'Produit supprimé avec succès' });
     } catch (error) {

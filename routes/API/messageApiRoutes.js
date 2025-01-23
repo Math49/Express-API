@@ -59,7 +59,10 @@ router.put('/messages/:id', async (req, res) => {
         if (!message) {
             return res.status(404).json({ error: 'Message non trouvé' });
         }
-        await message.update(req.body);
+        await message.update({
+            Textmessage: req.body.Textmessage,
+            Date: req.body.Date,
+        });
         res.status(200).json(message);
     } catch (error) {
         console.error('Erreur lors de la mise à jour du message :', error);
