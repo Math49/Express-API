@@ -22,4 +22,8 @@ router.post('/login', (req, res) => {
     }
 );
 
+router.post('/logout', (req, res) => {
+    res.clearCookie('auth_token');
+    res.status(200).json({ success: true, message: 'Déconnexion réussie' });
+});
 export default router;

@@ -1,7 +1,6 @@
 import express from 'express';
 import Commandes from '../../App/Models/Logistique/Commandes.js';
 import Article from '../../App/Models/Boutique/Article.js';
-import { or } from 'sequelize';
 
 const router = express.Router();
 
@@ -9,23 +8,45 @@ const router = express.Router();
 router.post('/orders', async (req, res) => {
     try {
 
-        const num_Commande = req.body.num_Commande;
+        const produits = req.body.produits;
         const ID_Client = req.body.ID_Client;
-        const Volume = req.body.Volume;
-        const Prix = req.body.Prix;
-        const ID_Livraison = req.body.ID_Livraison;
         const status = "En attente";
-        const date = req.body.date;
+
+        const num_Commande = Math.floor(Math.random() * 1000000);
+        const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+        // pb de dates à régler
+
+        const ID_Livraison = 0;
+
+        const volume = 0;
+        let Prix = 0;
+
+        for (const produit of produits) {
+            Prix += produit.Prix_HT * produit.quantity;
+        }
 
         const order = await Commandes.create({
-            num_Commande,
-            Volume,
-            Prix,
-            ID_Client,
-            ID_Livraison,
-            status,
-            date
+            Num_Commande: num_Commande,
+            Volume: volume,
+            Prix_Paye: Prix,
+            ID_Client: ID_Client,
+            ID_Livraison: ID_Livraison,
+            Status: status,
+            Date_Commande: date
         });
+
+        console.log(order);
+
+        for (const produit of produits) {
+            await Article.create({
+                ID_Produit: produit.ID_Produit,
+                ID_Commande: order.ID_Commande,
+                Quantite: produit.quantity,
+                Prix: produit.Prix_HT
+            });
+        }
+
         res.status(201).json(order);
     } catch (error) {
         console.error('Erreur lors de la création de la commande :', error);
@@ -120,6 +141,26 @@ router.delete('/orders/:id', async (req, res) => {
         res.status(200).json({ message: 'Commande supprimée avec succès' });
     } catch (error) {
         console.error('Erreur lors de la suppression de la commande :', error);
+        res.status(500).json({ error: 'Erreur interne du serveur' });
+    }
+});
+
+router.post('/articles', async (req, res) => {
+    try {
+        const ID_Commande = req.body.ID_Commande;
+        const ID_Produit = req.body.ID_Produit;
+        const Quantite = req.body.Quantite;
+        const Prix = req.body.Prix;
+
+        const article = await Article.create({
+            ID_Produit,
+            ID_Commande,
+            Quantite,
+            Prix
+        });
+        res.status(201).json(article);
+    } catch (error) {
+        console.error('Erreur lors de la création de l\'article :', error);
         res.status(500).json({ error: 'Erreur interne du serveur' });
     }
 });

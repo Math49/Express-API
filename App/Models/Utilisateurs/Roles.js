@@ -104,7 +104,7 @@ export const Livreur = sequelize.define('Livreur', {
     },
     ID_Compte: {
         type: DataTypes.INTEGER,
-        allowNull
+        allowNull: false,
     },
     isDeleted: {
         type: DataTypes.BOOLEAN,

@@ -107,7 +107,7 @@ router.delete('/assignment-requests', async (req, res) => {
 });
 
 
-router.push('/accept-assignment-requests/:id_Commercial/:id_Fournisseur', async (req, res) => {
+router.put('/accept-assignment-requests/:id_Commercial/:id_Fournisseur', async (req, res) => {
 
     const ID_Fournisseur = req.params.id_Fournisseur;
     const ID_Commercial = req.params.id_Commercial;

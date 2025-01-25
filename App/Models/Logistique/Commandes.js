@@ -2,7 +2,7 @@ import { DataTypes } from 'sequelize';
 import { sequelize } from '../../../server/dbConnectServ.js';
 
 const Commandes = sequelize.define('Logistique.Commandes', {
-    ID_Commandes: {
+    ID_Commande: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,

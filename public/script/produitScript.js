@@ -2,7 +2,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const produitID = window.location.pathname.split('/').pop();
 
-    fetch(`/api/produits/${produitID}`,{
+    let product = null;
+
+    fetch(`/api/products/${produitID}`,{
         method: 'GET',
         headers: {
             'Accept': 'application/json'
@@ -16,6 +18,8 @@ document.addEventListener('DOMContentLoaded', function() {
     })
     .then(data => {
 
+        product = data;
+        console.log(product);
         const produitLabel = document.getElementById('produitLabel');
         const produitMarque = document.getElementById('produitMarque');
         const produitPrix = document.getElementById('produitPrixHT');
@@ -73,11 +77,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     const commentForm = document.getElementById('commentForm');
+    const idCompte = document.getElementById('ID_Compte').value;
 
     commentForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const idCompte = document.getElementById('ID_Compte').value;
         const commentaireTexte = document.getElementById('Texte').value;
 
         try {
@@ -104,6 +108,25 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Erreur :', error);
             window.alert('Une erreur est survenue. Veuillez réessayer.');
         }
+    });
+
+    const addcart = document.getElementById('addcart');
+    addcart.addEventListener('click', async (e) => {
+        console.log(product);
+        product = { ...product, ID_Client: idCompte };
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        console.log(cart);
+        const existingItem = cart.find(item => item.ID_Produit === product.ID_Produit && item.ID_Client === product.ID_Client);
+
+
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            cart.push({ ...product, quantity: 1 });
+        }
+
+        localStorage.setItem('cart', JSON.stringify(cart));
+        alert('Produit ajouté au panier !');
     });
 
 });

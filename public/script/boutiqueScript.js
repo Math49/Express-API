@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let filteredProduits = []; // Produits filtrés
 
     // Récupère tous les produits au chargement
-    fetch('/api/produits', {
+    fetch('/api/products', {
         method: 'GET',
         headers: {
             'Accept': 'application/json',

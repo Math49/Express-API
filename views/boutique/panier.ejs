@@ -1,0 +1,49 @@
+<%- include('../components/head') %>
+<title>Panier</title>
+</head>
+<body>
+    <%- include('../components/header') %>
+
+    <div class="flex flex-col items-center justify-center h-[50vh] p-[3%] bg-gradient-ypt">
+        <h1 class="text-[60px] font-black text-[#F5F5F5]">Votre Panier</h1>
+        <p class="text-xl font-medium text-center">Voici les articles que vous avez ajoutés au panier.</p>
+    </div>
+    <div class="separator"></div>
+
+    <!-- Section Panier -->
+    <div class="container mx-auto py-8">
+        <table class="table-auto w-full border-collapse border border-gray-300">
+            <thead class="bg-gray-200">
+                <tr>
+                    <th class="px-4 py-2 border">Produit</th>
+                    <th class="px-4 py-2 border">Prix</th>
+                    <th class="px-4 py-2 border">Quantité</th>
+                    <th class="px-4 py-2 border">Total</th>
+                    <th class="px-4 py-2 border">Action</th>
+                </tr>
+            </thead>
+            <tbody id="cartItems">
+                <!-- Les articles du panier seront insérés ici -->
+            </tbody>
+        </table>
+
+        <div class="flex justify-between mt-6">
+            <button id="clearCart" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                Vider le panier
+            </button>
+            <button id="validCart" class="bg-[#EAAED6] hover:bg-[#FBE9B1] text-black font-bold py-2 px-4 rounded">
+                Valider le panier
+            </button>
+            <p class="text-xl font-semibold">
+                Total : <span id="cartTotal">0.00</span> €
+            </p>
+        </div>
+        <input type="hidden" name="userID" id="userID" value="<%= user.id %>">
+    </div>
+
+    <div class="separator"></div>
+    <%- include('../components/footer') %>
+
+    <script src="/static/script/panierScript.js"></script>
+</body>
+</html>
