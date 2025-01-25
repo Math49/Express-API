@@ -13,9 +13,11 @@ router.post('/orders', async (req, res) => {
         const status = "En attente";
 
         const num_Commande = Math.floor(Math.random() * 1000000);
-        const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+        const now = new Date();
+        const date = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ` +
+                     `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}.000`;
 
-        // pb de dates à régler
+        // pb de date
 
         const ID_Livraison = 0;
 
