@@ -1,43 +1,20 @@
-<nav>
-    <ul>
-        <li><a href="/">Accueil</a></li>
-        <li><a href="/about">À propos</a></li>
-        <li><a href="/tchat">Chat</a></li>
-        <li><a href="/dab">Formulaire</a></li>
-        <% if (user) { %>
-            <li><a href="/auth/logout" id="logout">Déconnexion</a></li>
-            <li id="user">Bienvenue, <%= user.Prenom %> <%= user.Nom %>!</li>
-        <% } else { %>
-            <li><a href="/auth/">Connexion</a></li>
-        <% } %>
-    </ul>
+<nav class="py-[20px] w-[10vw] h-[100%] shadow-lg">
+    <div class=" flex flex-col gap-4">
+        <a href="" class="flex pl-[20px] items-center gap-5 text-xl font-medium py-[10px] w-[100%] h-[80px] hover:bg-[#EAAED6]">
+            <i class="fa-solid fa-user"></i>
+            <p>Profil</p>
+        </a>
+        <a href="" class="flex pl-[20px] items-center gap-5 text-xl font-medium py-[10px] w-[100%] h-[80px] hover:bg-[#EAAED6]">
+            <i class="fa-solid fa-box"></i>
+            <p>Commandes</p>
+        </a>
+        <a href="" class="flex pl-[20px] items-center gap-5 text-xl font-medium py-[10px] w-[100%] h-[80px] hover:bg-[#EAAED6]">
+            <i class="fa-solid fa-truck-fast"></i>
+            <p>Livraisons</p>
+        </a>
+        <a href="" class="flex pl-[20px] items-center gap-5 text-xl font-medium py-[10px] w-[100%] h-[80px] hover:bg-[#EAAED6]">
+            <i class="fa-solid fa-cubes"></i>
+            <p>Fournisseurs</p>
+        </a>
+    </div>
 </nav>
-
-<style>
-    nav {
-        background-color: #333;
-        overflow: hidden;
-        display: flex;
-        justify-content: space-between;
-        padding: 0.5rem 1rem;
-    }
-    nav a {
-        color: white;
-        text-decoration: none;
-        padding: 0.5rem 1rem;
-        display: block;
-    }
-    nav a:hover {
-        background-color: #575757;
-    }
-    nav .menu {
-        display: flex;
-    }
-
-    nav #user {
-        color: rgb(13, 247, 208);
-        padding: 0.5rem 1rem;
-        list-style: none;
-        font-weight: 800;
-    }
-</style>

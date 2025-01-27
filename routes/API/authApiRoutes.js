@@ -14,7 +14,7 @@ router.post('/login', (req, res) => {
             }
 
             const token = generateToken(user);
-            res.cookie('auth_token', token, { httpOnly: true, maxAge: 3600000 });
+            res.cookie('auth_token', token, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
             res.status(200).json({ success: true, message: 'Connexion réussie', user });
         })
         .catch(err => {

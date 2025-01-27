@@ -54,7 +54,7 @@ export function generateToken(user) {
     return jwt.sign(
         { id: user.ID_Compte, role: user.role },
         secretKey,
-        { expiresIn: '1h' }
+        { expiresIn: '1d' }
     );
 }
 

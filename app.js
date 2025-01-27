@@ -11,6 +11,7 @@ import mainRoutes from './routes/mainRoute.js';
 import errorRoutes from './routes/errorRoutes.js';
 import boutiqueRoutes from './routes/boutiqueRoutes.js';
 import authRoutes from './routes/authRoutes.js';
+import profilRoutes from './routes/profilRoutes.js';
 
 //import routes API (/routes/API/)
 import produitRoutes from './routes/API/produitRoutes.js';
@@ -62,6 +63,8 @@ app.use('/', mainRoutes);
 app.use('/', authRoutes);
 
 app.use('/boutique', boutiqueRoutes);
+
+app.use('/profil', profilRoutes);
 
 app.use('/error', errorRoutes);
 
