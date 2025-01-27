@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-
     fetch('/api/products',{
         method: 'GET',
         headers: {

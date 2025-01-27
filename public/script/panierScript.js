@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const validCart = document.getElementById('validCart');
 
     validCart.addEventListener('click', async () => {
-        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
         const products = cart.filter(item => item.ID_Client === userID);
         try {
             const response = await fetch('/api/orders', {

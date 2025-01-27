@@ -8,26 +8,34 @@ const router = express.Router();
 router.post('/orders', async (req, res) => {
     try {
 
+        Commandes.sync({ alter: true });
+
         const produits = req.body.produits;
-        const ID_Client = req.body.ID_Client;
+        let ID_Client = req.body.ID_Client;
         const status = "En attente";
 
-        const num_Commande = Math.floor(Math.random() * 1000000);
-        const now = new Date();
-        const date = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ` +
-                     `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}.000`;
-
-        // pb de date
-
+        // Générer un numéro de commande aléatoire
+        const num_Commande = Math.floor(Math.random() * 1000000).toString();
         const ID_Livraison = 0;
 
-        const volume = 0;
+        const volume = 0; // Ajustez si nécessaire
         let Prix = 0;
 
+        // Calcul du prix total
         for (const produit of produits) {
-            Prix += produit.Prix_HT * produit.quantity;
+            Prix += parseFloat(produit.Prix_HT) * parseInt(produit.quantity, 10);
         }
 
+        // Conversion explicite des types
+        Prix = parseFloat(Prix.toFixed(2)); // Arrondi à 2 décimales
+        ID_Client = parseInt(ID_Client, 10);
+
+        // Vérification des types avant insertion
+        if (isNaN(Prix) || isNaN(ID_Client)) {
+            throw new Error("Prix ou ID_Client est invalide.");
+        }
+        
+        // Création de la commande
         const order = await Commandes.create({
             Num_Commande: num_Commande,
             Volume: volume,
@@ -35,24 +43,24 @@ router.post('/orders', async (req, res) => {
             ID_Client: ID_Client,
             ID_Livraison: ID_Livraison,
             Status: status,
-            Date_Commande: date
         });
 
-        console.log(order);
-
+        // Création des articles associés
         for (const produit of produits) {
             await Article.create({
                 ID_Produit: produit.ID_Produit,
                 ID_Commande: order.ID_Commande,
-                Quantite: produit.quantity,
-                Prix: produit.Prix_HT
+                Quantite: parseInt(produit.quantity, 10),
+                Prix: parseFloat(produit.Prix_HT),
             });
         }
 
+        
+
         res.status(201).json(order);
     } catch (error) {
-        console.error('Erreur lors de la création de la commande :', error);
-        res.status(500).json({ error: 'Erreur interne du serveur' });
+        console.error("Erreur lors de la création de la commande :", error);
+        res.status(500).json({ error: "Erreur interne du serveur" });
     }
 });
 

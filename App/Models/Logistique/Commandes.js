@@ -33,15 +33,13 @@ const Commandes = sequelize.define('Logistique.Commandes', {
         type: DataTypes.STRING(30),
         allowNull: false,
     },
-    Date_Commande: {
-        type: DataTypes.DATE,
-        allowNull: false,
-    },
 },
 {
     schema: 'Logistique',
     tableName: 'Commandes',
-    timestamps: false,
+    timestamps: true,
+    createdAt: false,
+    updatedAt: false,
 });
 
 export default Commandes;
