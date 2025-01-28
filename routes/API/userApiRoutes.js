@@ -114,7 +114,10 @@ router.get('/users/:id', async (req, res) => {
                 break;
             }
         }
-        user.role = foundRole;
+        
+        user.dataValues.Password = "t'y a crue hein !";
+
+        user.dataValues.Role = foundRole;
 
         if (!user) {
             return res.status(404).json({ error: 'Utilisateur non trouvé' });
