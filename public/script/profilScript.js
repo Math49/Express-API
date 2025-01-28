@@ -13,7 +13,15 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('userEmail').value = data.Email;
             document.getElementById('userNom').value = data.Nom;
             document.getElementById('userPrenom').value = data.Prenom;
-            document.getElementById('userRole').value = data.Role;
+
+            const userRoleSelect = document.getElementById('userRole');
+            for (let i = 0; i < userRoleSelect.options.length; i++) {
+                if (userRoleSelect.options[i].value === data.Role) {
+                    userRoleSelect.selectedIndex = i;
+                    break;
+                }
+            }
+
         });
 
 
@@ -39,5 +47,23 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
     });
+
+    document.getElementById('userSubmit').addEventListener('click', function() {
+
+        fetch('/api/users/' + userID, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                Email: document.getElementById('userEmail').value,
+                Nom: document.getElementById('userNom').value,
+                Prenom: document.getElementById('userPrenom').value,
+                Role: document.getElementById('userRole').value
+            })
+        })
+
+    });
+
 
 });

@@ -23,7 +23,7 @@ export const Client = sequelize.define('Client', {
     },
     Adresse:{
         type: DataTypes.GEOGRAPHY,
-        allowNull: false,
+        allowNull: true,
     },
     ID_Compte: {
         type: DataTypes.INTEGER,
@@ -65,11 +65,11 @@ export const Fournisseur = sequelize.define('Fournisseur', {
     },
     Entreprise: {
         type: DataTypes.STRING(50),
-        allowNull: false,
+        allowNull: true,
     },
     ID_Commercial: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
     },
     ID_Compte: {
         type: DataTypes.INTEGER,
@@ -92,15 +92,15 @@ export const Livreur = sequelize.define('Livreur', {
     },
     Secteur: {
         type: DataTypes.GEOGRAPHY,
-        allowNull: false,
+        allowNull: true,
     },
     Capacite: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
     },
     ID_RespLogi: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
     },
     ID_Compte: {
         type: DataTypes.INTEGER,
@@ -123,7 +123,7 @@ export const ResponsableLogistique = sequelize.define('ResponsableLogistique', {
     },
     Secteur: {
         type: DataTypes.GEOGRAPHY,
-        allowNull: false,
+        allowNull: true,
     },
     ID_Compte: {
         type: DataTypes.INTEGER,

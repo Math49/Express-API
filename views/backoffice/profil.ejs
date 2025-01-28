@@ -7,12 +7,13 @@
     <%- include('../components/profil-header') %>
     <div class="h-[80vh] flex justify-center items-center">
         <%- include('../components/navbar') %>
-        <div class="w-[90%] overflow-y-auto">
-            <div class="flex justify-center items-center">
+        <div class="w-[100%] flex flex-col items-center gap-[20px] overflow-y-auto">
+            <div class="flex w-[50%] justify-start items-center gap-3">
                 <button class="bg-[#EAAED6] rounded px-3 py-2" id="updateUser">Modifier</button>
+                <button type="submit" id="userSubmit" class="px-3 py-2 bg-[#FBE9B1] hidden rounded">Mettre à jour</button>
             </div>
-            <div class="flex justify-center items-center gap-10">
-                <div class="w-[50%]">
+            <div class="flex w-[50%] justify-start items-center gap-10">
+                <div class="">
                     <h2 class="text-4xl font-black">Informations personnelles</h2>
                     <form class="flex flex-col gap-5 mt-5">
                         <div class="flex items-center gap-5">
@@ -29,9 +30,16 @@
                         </div>
                         <div class="flex items-center gap-5">
                             <label for="role" class="text-xl font-semibold">Rôle :</label>
-                            <input type="text" id="userRole" class="w-[50%] p-[10px] border border-[#EAAED6] rounded-md" value="" disabled>
+                            <!-- <input type="text" id="userRole" class="w-[50%] p-[10px] border border-[#EAAED6] rounded-md" value="" disabled> -->
+                            <select disabled name="userRole" id="userRole" class="w-[50%] p-[10px] border border-[#EAAED6] rounded-md">
+                                <option value="Administrateur" >Administrateur</option>
+                                <option value="Client">Utilisateur</option>
+                                <option value="Commercial">Commercial</option>
+                                <option value="Fournisseur">Fournisseur</option>
+                                <option value="ResponsableLogistique">Responsable Logistique</option>
+                                <option value="Livreur">Livreur</option>
+                            </select>
                         </div>
-                        <button type="submit" id="userSubmit" class="w-[10%] p-[10px] bg-[#FBE9B1] hidden rounded-md">Mettre à jour</button>
                     </form>
                 </div>
             </div>

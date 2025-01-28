@@ -134,11 +134,50 @@ router.put('/users/:id', async (req, res) => {
     const { id } = req.params;
     try {
 
+        const email = req.body.Email;
+        const nom = req.body.Nom;
+        const prenom = req.body.Prenom;
+        const role = req.body.Role;
+
         const user = await Comptes.findByPk(id);
         if (!user) {
             return res.status(404).json({ error: 'Utilisateur non trouvé' });
         }
-        await user.update(req.body);
+        await user.update({
+            Email: email,
+            Nom: nom,
+            Prenom: prenom
+        });
+
+        const roles = [
+            { model: Administrateur, role: 'Administrateur' },
+            { model: Client, role: 'Client' },
+            { model: Commercial, role: 'Commercial' },
+            { model: Fournisseur, role: 'Fournisseur' },
+            { model: Livreur, role: 'Livreur' },
+            { model: ResponsableLogistique, role: 'Responsable_Logistique' },
+        ];
+
+        for (const { model, role: roleName } of roles) {
+            const result = await model.findOne({ where: { ID_Compte: user.ID_Compte } });
+            if (result) {
+                if (roleName === role) {
+                    break;
+                }
+                else {
+                    await result.destroy();
+                }
+            }
+
+            if (roleName === role) {
+                await model.create({ ID_Compte: user.ID_Compte });
+                break;
+            }
+        }
+
+        
+
+
         res.status(200).json(user);
     } catch (error) {
         console.error('Erreur lors de la mise à jour de l\'utilisateur :', error);
