@@ -175,7 +175,7 @@ router.put('/users/:id', async (req, res) => {
             }
         }
 
-        
+        // faire ce nécessaire pour les spécificités de chaque rôle
 
 
         res.status(200).json(user);
