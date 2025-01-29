@@ -17,6 +17,11 @@ const Messagerie = sequelize.define('Logistique.Messagerie', {
         foreignKey: true,
         allowNull: false,
     },
+    ID_Sender: {
+        type: DataTypes.INTEGER,
+        foreignKey: true,
+        allowNull: false,
+    },
     Message: {
         type: DataTypes.TEXT,
         allowNull: false,

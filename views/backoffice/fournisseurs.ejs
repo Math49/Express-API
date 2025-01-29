@@ -7,10 +7,17 @@
     <%- include('../components/profil-header') %>
     <div class="h-[80vh] flex justify-center items-center">
         <%- include('../components/navbar') %>
-        <div class="w-[100%] flex flex-col items-center gap-[20px] overflow-y-auto">
-            <div id="chatBox" style="height: 300px; overflow-y: auto; border: 1px solid gray;"></div>
-            <input type="text" id="messageInput" placeholder="Écrire un message">
-            <button id="sendMessage">Envoyer</button>
+        <div class="w-[100%] h-[100%] flex flex-col items-center gap-[20px] overflow-y-auto">
+            <div id="roomNav" class="flex justify-start items-center w-[90%] gap-[20px] p-[20px]">
+                
+
+            </div>
+            <div class="w-[100%] h-[1px] bg-black"></div>
+            <div id="roomContent" class="w-[90%] h-[80%] flex flex-col items-center gap-[20px]  hidden">
+                <div id="chatBox" class="w-[90%] h-[50%] bg-white overflow-y-auto"></div>
+                <input type="text" id="messageInput" placeholder="Écrire un message">
+                <button id="sendMessage">Envoyer</button>
+            </div>
         </div>
     </div>
     <%- include('../components/footer') %>

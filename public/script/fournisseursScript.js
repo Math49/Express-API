@@ -1,30 +1,145 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const socket = io();
+document.addEventListener("DOMContentLoaded", async () => {
+    
+    const userID = document.getElementById("userID").value;
 
-    const ID_Fournisseur = 102; // Récupérer dynamiquement selon l'utilisateur connecté
-    const ID_Commercial = 5;    // Récupérer dynamiquement selon l'utilisateur connecté
+    let user = null;
+    let fournisseurs = null;
+    let socket = io(); // Initialisation du socket global
+    let currentRoom = null; // Stocke la room actuelle
 
-    // Rejoindre la room du fournisseur
-    socket.emit("joinRoom", { ID_Fournisseur, ID_Commercial });
+    try {
+        await fetch("/api/users/" + userID, {
+            method: "GET",
+            headers: { "Accept": "application/json" },
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Erreur lors de la récupération de l'utilisateur");
+            }
+            return response.json();
+        })
+        .then(data => { user = data; });
 
+        await fetch("/api/users/role/Fournisseur", {
+            method: "GET",
+            headers: { "Accept": "application/json" },
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Erreur lors de la récupération des fournisseurs");
+            }
+            return response.json();
+        })
+        .then(data => { fournisseurs = data; });
+
+    } catch (error) {
+        console.error(error);
+    }
+
+    const roomNav = document.getElementById("roomNav");
+
+    if(user.Role === "Commercial"){
+        const fournisseurCommercial = fournisseurs.filter(fournisseur => fournisseur.data.ID_Commercial === user.data.ID_Commercial);
+
+        roomNav.innerHTML = fournisseurCommercial.map(fournisseur => `
+            <div class="roomDiv cursor-pointer bg-white m-2 px-[20px] py-[10px] rounded-lg shadow-lg" data-fournisseur="${fournisseur.data.ID_Fournisseur}" data-commercial="${fournisseur.data.ID_Commercial}" data-entreprise="${fournisseur.data.Entreprise}">
+                <p class="text-xl font-medium">${fournisseur.data.Entreprise}</p>
+            </div>
+        `).join('');
+    }
+    else if(user.Role === "Fournisseur"){
+        roomNav.innerHTML = `
+            <div class="roomDiv cursor-pointer bg-white m-2 px-[20px] py-[10px] rounded-lg shadow-lg" data-fournisseur="${user.data.ID_Fournisseur}" data-commercial="${user.data.ID_Commercial}">
+                <p class="text-xl font-medium">${user.data.Entreprise}</p>
+            </div>
+        `;
+    }
+
+    const roomDivs = document.querySelectorAll(".roomDiv");
+    const roomContent = document.getElementById("roomContent");
+    const chatBox = document.getElementById("chatBox");
+    const messageInput = document.getElementById("messageInput");
     const sendMessage = document.getElementById("sendMessage");
-    // Envoyer un message
-    sendMessage.addEventListener("click", () => {
-        const messageInput = document.getElementById("messageInput");
-        const message = messageInput.value;
 
-        socket.emit("sendMessage", {
-            ID_Fournisseur,
-            message,
-            sender: "Fournisseur 101", // Nom du sender
+    roomDivs.forEach(roomDiv => {
+        roomDiv.addEventListener("click", () => {
+
+            
+            const ID_Fournisseur = roomDiv.getAttribute("data-fournisseur");
+            const ID_Commercial = roomDiv.getAttribute("data-commercial");
+            
+            try{
+
+                fetch(`/api/messages/${ID_Fournisseur}/${ID_Commercial}`, {
+                    method: "GET",
+                    headers: { "Accept": "application/json" },
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Erreur lors de la récupération des messages");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+                    chatBox.innerHTML = data.map(message => `<p><strong>${message.sender.Prenom} ${message.sender.Nom} :</strong> ${message.Message}</p>`).join('');
+                });
+
+            }
+            catch (error){
+                console.error(error);
+            }
+            
+            let newRoom = `room-${ID_Fournisseur}-${ID_Commercial}`;
+            
+            if (currentRoom === newRoom) return;
+
+            if (currentRoom) {
+                socket.emit("leaveRoom", { room: currentRoom });
+                console.log(`Quitté : ${currentRoom}`);
+            }
+
+            socket.emit("joinRoom", { room: newRoom });
+            currentRoom = newRoom;
+            console.log(`Rejoint : ${newRoom}`);
+
+            roomContent.classList.remove("hidden");
+            chatBox.innerHTML = ""; 
+
+            // Nettoyer les anciens écouteurs d'événements (évite les doublons)
+            sendMessage.removeEventListener("click", sendMessageHandler);
+            sendMessage.addEventListener("click", sendMessageHandler);
+
+            function sendMessageHandler() {
+                const message = messageInput.value.trim();
+                if (message === "") return;
+
+                fetch("/api/messages", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ 
+                        ID_Fournisseur: ID_Fournisseur,
+                        ID_Commercial: ID_Commercial,
+                        message: message,  
+                        Date: new Date().toISOString().slice(0, 19).replace('T', ' ')
+                    }),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Erreur lors de l'envoi du message");
+                    }
+                    socket.emit("sendMessage", { room: currentRoom, message, sender: `${user.Prenom} ${user.Nom}` });
+                    messageInput.value = ""; // Réinitialiser le champ de saisie
+                    return response.json();
+                })
+
+            }
+
+            // Écouter les messages reçus (supprime les anciens écouteurs pour éviter les doublons)
+            socket.off("receiveMessage").on("receiveMessage", (data) => {
+                chatBox.innerHTML += `<p><strong>${data.sender} :</strong> ${data.message}</p>`;
+            });
+
         });
-
-        messageInput.value = ""; // Vider le champ
-    });
-
-    // Écouter les messages reçus
-    socket.on("receiveMessage", (data) => {
-        const chatBox = document.getElementById("chatBox");
-        chatBox.innerHTML += `<p><strong>${data.sender} :</strong> ${data.message}</p>`;
     });
 });

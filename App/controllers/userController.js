@@ -55,6 +55,7 @@ const user = {
                     }
                 }
                 user.role = foundRole;
+                user.dataValues.Password = "t'y a crue hein !";
             }
 
             res.status(200).json(users);
@@ -66,8 +67,10 @@ const user = {
 
     async getRolesUser(req, res) {
         const { role } = req.params;
+
+
         try {
-            const userRoles = [];
+            let userRoles = [];
             switch (role) {
                 case 'Administrateur':
                     userRoles = await Administrateur.findAll();
@@ -89,11 +92,13 @@ const user = {
                     break;
             }
 
-            const users = [];
+            let users = [];
 
             for (const userRole of userRoles) {
-                const user = await Comptes.findByPk(userRole.ID_Compte);
-                user.role = role;
+                let user = await Comptes.findByPk(userRole.ID_Compte);
+                user.dataValues.role = role;
+                user.dataValues.data = userRole.dataValues;
+                user.dataValues.Password = "t'y a crue hein !";
                 users.push(user);
             }
 
@@ -119,10 +124,12 @@ const user = {
             ];
 
             let foundRole = null;
+            let data = null;
             for (const { model, role } of roles) {
                 const result = await model.findOne({ where: { ID_Compte: user.ID_Compte } });
                 if (result) {
                     foundRole = role;
+                    data = result;
                     break;
                 }
             }
@@ -130,6 +137,7 @@ const user = {
             user.dataValues.Password = "t'y a crue hein !";
 
             user.dataValues.Role = foundRole;
+            user.dataValues.data = data;
 
             if (!user) {
                 return res.status(404).json({ error: 'Utilisateur non trouvé' });

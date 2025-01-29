@@ -3,26 +3,28 @@ export default function socketServ(io) {
 
     io.on("connection", (socket) => {
         console.log("Nouvelle connexion :", socket.id);
-
-        // Rejoindre une room spécifique (fournisseur + commercial)
-        socket.on("joinRoom", ({ ID_Fournisseur, ID_Commercial }) => {
-            const roomName = `room_fournisseur_${ID_Fournisseur}`;
-            socket.join(roomName);
-            connectedUsers[socket.id] = { ID_Fournisseur, ID_Commercial };
-
-            console.log(`User ${socket.id} a rejoint la room ${roomName}`);
+    
+        socket.on("joinRoom", async ({ room }) => {
+            const rooms = Array.from(socket.rooms); // Liste des rooms de l'utilisateur
+            for (const oldRoom of rooms) {
+                if (oldRoom !== socket.id) {
+                    await socket.leave(oldRoom);
+                    console.log(`Utilisateur ${socket.id} a quitté la room ${oldRoom}`);
+                }
+            }
+    
+            socket.join(room);
+            console.log(`Utilisateur ${socket.id} a rejoint la room ${room}`);
         });
-
-        // Recevoir un message et le diffuser à la room
-        socket.on("sendMessage", ({ ID_Fournisseur, message, sender }) => {
-            const roomName = `room_fournisseur_${ID_Fournisseur}`;
-            io.to(roomName).emit("receiveMessage", { sender, message });
+    
+        socket.on("sendMessage", ({ room, message, sender }) => {
+            io.to(room).emit("receiveMessage", { message, sender });
+            console.log(`Message de ${sender} envoyé dans la room ${room} : ${message}`);
         });
-
-        // Déconnexion d'un utilisateur
+    
         socket.on("disconnect", () => {
-            console.log("Utilisateur déconnecté :", socket.id);
-            delete connectedUsers[socket.id];
+            console.log(`Utilisateur ${socket.id} déconnecté`);
         });
     });
+    
 }

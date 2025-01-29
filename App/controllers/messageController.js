@@ -1,4 +1,6 @@
 import Messagerie from '../../App/Models/Logistique/Messagerie.js';
+import Comptes from '../Models/Utilisateurs/Comptes.js';
+import { Commercial, Fournisseur } from '../Models/Utilisateurs/Roles.js';
 
 const message = {
 
@@ -9,12 +11,14 @@ const message = {
             const ID_Commercial = req.body.ID_Commercial;
             const Textmessage = req.body.message;
             const Date = req.body.Date;
-    
+            const Sender = req.user.id;
+
             const message = await Messagerie.create({
-                ID_Fournisseur,
-                ID_Commercial,
-                Textmessage,
-                Date,
+                ID_Sender: Sender,
+                ID_Fournisseur: ID_Fournisseur,
+                ID_Commercial: ID_Commercial,
+                Message: Textmessage,
+                Date_Message: Date,
             });
             res.status(201).json(message);
         } catch (error) {
@@ -43,6 +47,30 @@ const message = {
             res.status(200).json(message);
         } catch (error) {
             console.error('Erreur lors de la récupération du message :', error);
+            res.status(500).json({ error: 'Erreur interne du serveur' });
+        }
+    },
+
+    async getMessagesRooms(req, res) {
+        const { id_Fournisseur, id_Commercial } = req.params;
+        try {
+            const messages = await Messagerie.findAll({
+                where: {
+                    ID_Fournisseur: id_Fournisseur,
+                    ID_Commercial: id_Commercial,
+                }
+            });
+
+            for (const message of messages) {
+                const sender = await Comptes.findByPk(message.ID_Sender);
+                message.dataValues.sender = sender.dataValues;
+            }
+            if (!messages) {
+                return res.status(404).json({ error: 'Messages non trouvés' });
+            }
+            res.status(200).json(messages);
+        } catch (error) {
+            console.error('Erreur lors de la récupération des messages :', error);
             res.status(500).json({ error: 'Erreur interne du serveur' });
         }
     },
