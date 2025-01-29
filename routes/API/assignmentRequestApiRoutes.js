@@ -1,5 +1,5 @@
 import express from 'express';
-import assignmentRequest from '../../App/controllers/assignmentRequestController';
+import assignmentRequest from '../../App/controllers/assignmentRequestController.js';
 
 const router = express.Router();
 

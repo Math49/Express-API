@@ -5,6 +5,8 @@ import cookieParser from 'cookie-parser';
 import http from 'http';
 import dbConnect from './server/dbConnectServ.js';
 import { attachUser } from './server/authServ.js';
+import { Server } from 'socket.io';
+import socketServ from './server/socket.js';
 
 //import routes (/routes/)
 import mainRoutes from './routes/mainRoute.js';
@@ -14,7 +16,6 @@ import authRoutes from './routes/authRoutes.js';
 import profilRoutes from './routes/profilRoutes.js';
 
 //import routes API (/routes/API/)
-import produitRoutes from './routes/API/produitRoutes.js';
 import authApiRoutes from './routes/API/authApiRoutes.js';
 
 import userRoutes from './routes/API/userApiRoutes.js';
@@ -33,6 +34,8 @@ app.use(cookieParser());
 const server = http.createServer(app);
 const PORT = 8080;
 
+const io = new Server(server);
+
 app.use(attachUser);
 
 // Middleware pour gérer les fichiers statiques (CSS, JS, images, etc.)
@@ -48,7 +51,6 @@ app.set('views', path.join(path.resolve(), 'views'));
 dbConnect();
 
 // routes API
-app.use('/api', produitRoutes);
 app.use('/api', authApiRoutes);
 app.use('/api', userRoutes);
 app.use('/api', productRoutes);
@@ -98,6 +100,9 @@ app.use((req, res) => {
 app.use((req, res) => {
     res.status(404).render('error/404', { title: 'Page non trouvée', user: req.user });
 });
+
+
+socketServ(io);
 
 // Lancer le serveur
 server.listen(PORT, () => {
