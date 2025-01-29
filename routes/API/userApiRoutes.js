@@ -170,8 +170,9 @@ router.put('/users/:id', async (req, res) => {
             }
 
             if (roleName === role) {
-                await model.create({ ID_Compte: user.ID_Compte });
-                break;
+                if (roleName === 'Client'){
+                    
+                }
             }
         }
 
