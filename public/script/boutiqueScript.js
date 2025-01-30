@@ -2,8 +2,9 @@ document.addEventListener('DOMContentLoaded', function () {
     let produits = []; // Tous les produits récupérés
     let filteredProduits = []; // Produits filtrés
 
+    const version = "v1";
     // Récupère tous les produits au chargement
-    fetch('/api/products', {
+    fetch(`/api/${version}/products`, {
         method: 'GET',
         headers: {
             'Accept': 'application/json',

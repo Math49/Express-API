@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cartTotalElement = document.getElementById('cartTotal');
     const clearCartButton = document.getElementById('clearCart');
     const userID = document.getElementById('userID').value;
+    const version = "v1";
 
     // Charger les articles du panier depuis le localStorage
     const loadCart = () => {
@@ -96,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
         const products = cart.filter(item => item.ID_Client === userID);
         try {
-            const response = await fetch('/api/orders', {
+            const response = await fetch(`/api/${version}/orders`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ ID_Client: userID, produits: products }),

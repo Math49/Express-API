@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
-    fetch('/api/products',{
+    const version = "v1";
+    fetch(`/api/${version}/products`,{
         method: 'GET',
         headers: {
             'Accept': 'application/json'

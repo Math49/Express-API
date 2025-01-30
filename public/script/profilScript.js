@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
 
     const userID = document.getElementById('userID').value;
-
+    const version = "v1";
     let disabled = true;
 
-    fetch('/api/users/' + userID)
+    fetch(`/api/${version}/users/` + userID)
         .then(response => response.json())
         .then(data => {
             
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.getElementById('userSubmit').addEventListener('click', function() {
 
-        fetch('/api/users/' + userID, {
+        fetch(`/api/${version}/users/` + userID, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'

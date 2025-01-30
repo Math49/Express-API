@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
-    
+    const version = "v1";
     const produitID = window.location.pathname.split('/').pop();
 
     let product = null;
 
-    fetch(`/api/products/${produitID}`,{
+    fetch(`/api/${version}/products/${produitID}`,{
         method: 'GET',
         headers: {
             'Accept': 'application/json'
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
             element.addEventListener('click', async (e) => {
                 const commentId = e.target.dataset.id;
                 try {
-                    const response = await fetch(`/api/commentaires/${commentId}`, {
+                    const response = await fetch(`/api/${version}/commentaires/${commentId}`, {
                         method: 'DELETE',
                         headers: { 'Content-Type': 'application/json' },
                     });
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const commentaireTexte = document.getElementById('Texte').value;
 
         try {
-            const response = await fetch(`/api/produits/${produitID}/commentaires`, {
+            const response = await fetch(`/api/${version}/produits/${produitID}/commentaires`, {
                 method: 'POST',
                 body: JSON.stringify({
                     ID_Compte: idCompte,

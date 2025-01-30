@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const version = "v1";
     document.getElementById('logout').addEventListener('click', async () => {
         try {
-            const response = await fetch('/api/logout', {
+            const response = await fetch(`/api/${version}/logout`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
             });

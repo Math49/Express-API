@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault(); // Empêche l'envoi classique du formulaire
 
         const formData = new FormData(e.target);
-
+        
         try {
             const response = await fetch('/contact', {
                 method: 'POST',

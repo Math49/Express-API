@@ -6,9 +6,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     let fournisseurs = null;
     let socket = io(); // Initialisation du socket global
     let currentRoom = null; // Stocke la room actuelle
+    const version = "v1";
 
     try {
-        await fetch("/api/users/" + userID, {
+        await fetch(`/api/${version}/users/` + userID, {
             method: "GET",
             headers: { "Accept": "application/json" },
         })
@@ -20,7 +21,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         })
         .then(data => { user = data; });
 
-        await fetch("/api/users/role/Fournisseur", {
+        await fetch(`/api/${version}/users/role/Fournisseur`, {
             method: "GET",
             headers: { "Accept": "application/json" },
         })
@@ -70,7 +71,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             
             try{
 
-                fetch(`/api/messages/${ID_Fournisseur}/${ID_Commercial}`, {
+                fetch(`/api/${version}/messages/${ID_Fournisseur}/${ID_Commercial}`, {
                     method: "GET",
                     headers: { "Accept": "application/json" },
                 })
@@ -122,7 +123,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     socket.emit("dabCommand", { room: currentRoom, amount, devise });
                     messageInput.value = "";
                 } else {
-                    fetch("/api/messages", {
+                    fetch(`/api/${version}/messages`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ 

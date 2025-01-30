@@ -55,15 +55,17 @@ dbConnect();
 
 setupSwagger(app);
 
+const version = "v1";
+
 // routes API
-app.use('/api', authApiRoutes);
-app.use('/api', userRoutes);
-app.use('/api', productRoutes);
-app.use('/api', orderRoutes);
-app.use('/api', deliveryTourRoutes);
-app.use('/api', commentRoutes);
-app.use('/api', messageRoutes);
-app.use('/api', assignmentRequestRoutes);
+app.use(`/api/${version}`, authApiRoutes);
+app.use(`/api/${version}`, userRoutes);
+app.use(`/api/${version}`, productRoutes);
+app.use(`/api/${version}`, orderRoutes);
+app.use(`/api/${version}`, deliveryTourRoutes);
+app.use(`/api/${version}`, commentRoutes);
+app.use(`/api/${version}`, messageRoutes);
+app.use(`/api/${version}`, assignmentRequestRoutes);
 
 //routes
 app.use('/', mainRoutes);
