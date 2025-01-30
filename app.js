@@ -7,6 +7,7 @@ import dbConnect from './server/dbConnectServ.js';
 import { attachUser } from './server/authServ.js';
 import { Server } from 'socket.io';
 import socketServ from './server/socket.js';
+import setupSwagger from "./config/swaggerConfig.js";
 
 //import routes (/routes/)
 import mainRoutes from './routes/mainRoute.js';
@@ -36,6 +37,8 @@ const PORT = 8080;
 
 const io = new Server(server);
 
+
+
 app.use(attachUser);
 
 // Middleware pour gérer les fichiers statiques (CSS, JS, images, etc.)
@@ -50,6 +53,8 @@ app.set('views', path.join(path.resolve(), 'views'));
 // Connexion à la base de données
 dbConnect();
 
+setupSwagger(app);
+
 // routes API
 app.use('/api', authApiRoutes);
 app.use('/api', userRoutes);
@@ -63,11 +68,8 @@ app.use('/api', assignmentRequestRoutes);
 //routes
 app.use('/', mainRoutes);
 app.use('/', authRoutes);
-
 app.use('/boutique', boutiqueRoutes);
-
 app.use('/profil', profilRoutes);
-
 app.use('/error', errorRoutes);
 
 app.use((err, req, res, next) => {
@@ -89,13 +91,12 @@ app.use((req, res) => {
 });
 
 
-// Gestion des erreurs
-// app.use((req, res) => {
-//     res.status(401).render('error/401', { title: 'Accès non autorisé', user: req.user });
-// });
-// app.use((req, res) => {
-//     res.status(403).render('error/403', { title: 'Accès refusée', user: req.user });
-// });
+app.use((req, res) => {
+    res.status(401).render('error/401', { title: 'Accès non autorisé', user: req.user });
+});
+app.use((req, res) => {
+    res.status(403).render('error/403', { title: 'Accès refusée', user: req.user });
+});
 
 app.use((req, res) => {
     res.status(404).render('error/404', { title: 'Page non trouvée', user: req.user });
@@ -106,5 +107,6 @@ socketServ(io);
 
 // Lancer le serveur
 server.listen(PORT, () => {
-    console.log(`Serveur démarré sur http://localhost:${PORT}`);
+    console.log(`🚀 Serveur démarré sur http://localhost:${PORT}`);
+    console.log(`📄 Documentation Swagger disponible sur http://localhost:${PORT}/api-docs`);
 });
