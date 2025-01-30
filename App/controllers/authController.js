@@ -13,7 +13,7 @@ const auth = {
 
             const token = generateToken(user);
             res.cookie('auth_token', token, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
-            res.status(200).json({ success: true, message: 'Connexion réussie', user });
+            res.status(200).json({ success: true, message: 'Connexion réussie', user, token });
         })
         .catch(err => {
             console.error('Erreur lors de la connexion :', err);

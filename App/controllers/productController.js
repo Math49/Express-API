@@ -14,20 +14,28 @@ const product = {
             const taxes = 1;
             const Quantite = req.body.Stock;
             const ID_Fournisseur = req.body.ID_Fournisseur;
-    
+            
+            const lastProduct = await Produits.findOne({
+                order: [['ID_Produit', 'DESC']]
+            });
+            
+            const newProductId = lastProduct ? `P${parseInt(lastProduct.ID_Produit.slice(1)) + 1}` : 'P1';
+
+
             const product = await Produits.create({
-                label,
-                marque,
-                prix,
-                poids,
-                description,
-                taxes,
+                ID_Produit: newProductId,
+                Label: label,
+                Marque: marque,
+                Poids_en_g: poids,
+                Prix_HT: prix,
+                Description: description,
+                ID_Taxes: taxes
             });
     
-            const Stock = await Stock.create({
-                ID_Produit: product.ID_Produit,
-                quantite: Quantite && Quantite > 0 ? Quantite : 0,
-                ID_Fournisseur
+            await Stock.create({
+                ID_produit: newProductId,
+                Quantite: Quantite,
+                ID_Fournisseur: ID_Fournisseur
             });
     
             res.status(201).json(product);
@@ -100,13 +108,14 @@ const product = {
             if (!product) {
                 return res.status(404).json({ error: 'Produit non trouvé' });
             }
-            await product.update({
-                label,
-                marque,
-                prix,
-                poids,
-                description,
-                taxes,
+            const newProduct = await product.update({
+                ID_Produit: id,
+                Label: label,
+                Marque: marque,
+                Poids_en_g: poids,
+                Prix_HT: prix,
+                Description: description,
+                ID_Taxes: taxes
             });
 
             const stock = await Stock.findOne({ where: { ID_Produit: product.ID_Produit } });
@@ -114,7 +123,7 @@ const product = {
                 Quantite: quantite,
             });
 
-            res.status(200).json(product);
+            res.status(200).json(newProduct);
         } catch (error) {
             console.error('Erreur lors de la mise à jour du produit :', error);
             res.status(500).json({ error: 'Erreur interne du serveur' });

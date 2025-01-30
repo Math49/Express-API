@@ -5,7 +5,7 @@ const Produits = sequelize.define('Boutique.Produits', {
     ID_Produit: {
         type: DataTypes.STRING(50),
         primaryKey: true,
-        autoIncrement: true,
+        
     },
     Label: {
         type: DataTypes.STRING(50),

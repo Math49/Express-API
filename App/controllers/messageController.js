@@ -53,6 +53,7 @@ const message = {
 
     async getMessagesRooms(req, res) {
         const { id_Fournisseur, id_Commercial } = req.params;
+
         try {
             const messages = await Messagerie.findAll({
                 where: {
