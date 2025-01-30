@@ -96,12 +96,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (currentRoom) {
                 socket.emit("leaveRoom", { room: currentRoom });
-                console.log(`Quitté : ${currentRoom}`);
             }
 
-            socket.emit("joinRoom", { room: newRoom });
+            socket.emit("joinRoom", { room: newRoom});
             currentRoom = newRoom;
-            console.log(`Rejoint : ${newRoom}`);
 
             roomContent.classList.remove("hidden");
             chatBox.innerHTML = ""; 
@@ -114,30 +112,47 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const message = messageInput.value.trim();
                 if (message === "") return;
 
-                fetch("/api/messages", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ 
-                        ID_Fournisseur: ID_Fournisseur,
-                        ID_Commercial: ID_Commercial,
-                        message: message,  
-                        Date: new Date().toISOString().slice(0, 19).replace('T', ' ')
-                    }),
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Erreur lors de l'envoi du message");
-                    }
-                    socket.emit("sendMessage", { room: currentRoom, message, sender: `${user.Prenom} ${user.Nom}` });
-                    messageInput.value = ""; // Réinitialiser le champ de saisie
-                    return response.json();
-                })
+                const dabCommand = message.match(/^\/dab\s+([\d.]+)\s*([€$£])$/);
+
+                if (dabCommand) {
+                    console.log(dabCommand);
+                    const amount = parseFloat(dabCommand[1]);
+                    const devise = dabCommand[2];
+            
+                    socket.emit("dabCommand", { room: currentRoom, amount, devise });
+                    messageInput.value = "";
+                } else {
+                    fetch("/api/messages", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ 
+                            ID_Fournisseur: ID_Fournisseur,
+                            ID_Commercial: ID_Commercial,
+                            message: message,  
+                            Date: new Date().toISOString().slice(0, 19).replace('T', ' ')
+                        }),
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("Erreur lors de l'envoi du message");
+                        }
+                        socket.emit("sendMessage", { room: currentRoom, message, sender: `${user.Prenom} ${user.Nom}` });
+                        messageInput.value = ""; // Réinitialiser le champ de saisie
+                        return response.json();
+                    })
+                }
+
+                
 
             }
 
             // Écouter les messages reçus (supprime les anciens écouteurs pour éviter les doublons)
             socket.off("receiveMessage").on("receiveMessage", (data) => {
-                chatBox.innerHTML += `<p><strong>${data.sender} :</strong> ${data.message}</p>`;
+                if (data.system) {
+                    chatBox.innerHTML += `<p class="text-gray-500 italic"><strong>${data.sender} :</strong> ${data.message}</p>`;
+                } else {
+                    chatBox.innerHTML += `<p><strong>${data.sender} :</strong> ${data.message}</p>`;
+                }
             });
 
         });
