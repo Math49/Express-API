@@ -56,6 +56,8 @@ voir Postman
 
 - **app.js** : Point d'entrée principal de l'application.
 
+- **.env** : Fichier de configuration de l'API.
+
 ## Page dédiée chat avec Socket.io => en lien avec le DAB
 
 http://mathis.mercier.angers.mds-project.fr
