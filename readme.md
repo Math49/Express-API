@@ -63,3 +63,5 @@ voir Postman
 ## Page dédiée chat avec Socket.io => en lien avec le DAB
 
 http://mathis.mercier.angers.mds-project.fr
+
+[code](./server/socket.js)
