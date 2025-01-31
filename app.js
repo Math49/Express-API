@@ -37,8 +37,6 @@ const PORT = process.env.PORT;
 
 const io = new Server(server);
 
-
-
 app.use(attachUser);
 
 // Middleware pour gérer les fichiers statiques (CSS, JS, images, etc.)
@@ -90,18 +88,6 @@ app.use((err, req, res, next) => {
 
 app.use((req, res) => {
     res.redirect('/error/404');
-});
-
-
-app.use((req, res) => {
-    res.status(401).render('error/401', { title: 'Accès non autorisé', user: req.user });
-});
-app.use((req, res) => {
-    res.status(403).render('error/403', { title: 'Accès refusée', user: req.user });
-});
-
-app.use((req, res) => {
-    res.status(404).render('error/404', { title: 'Page non trouvée', user: req.user });
 });
 
 

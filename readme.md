@@ -40,23 +40,24 @@ voir Postman
 
 ## Architecture & Qualité de code
 
-- **App/** : Contient les fichiers de logique métier et les modèles de données.
-  - **controllers/** : Contient les contrôleurs pour gérer les différentes routes de l'API.
-  - **Models/** : Contient les modèles de données pour les différentes entités de l'application.
+Express-API
+- **App/**
+    - **controllers/**
+    - **Models/**
+- **config/**
+- **public/**
+    - **images/**
+    - **script/**
+    - **styles/**
+- **routes/**
+    - **API/**
+- **server/**
+- **views/**
+    - **components/**
+- **app.js**
+- **.env**
 
-- **config/** : Contient les fichiers de configuration, comme la configuration de Swagger.
-
-- **public/** : Contient les fichiers statiques accessibles par le client (images, scripts, styles).
-
-- **routes/** : Contient les fichiers de définition des routes de l'API.
-
-- **server/** : Contient les fichiers de configuration du serveur, comme l'authentification et la connexion à la base de données.
-
-- **views/** : Contient les fichiers de vues EJS pour le rendu côté serveur.
-
-- **app.js** : Point d'entrée principal de l'application.
-
-- **.env** : Fichier de configuration de l'API.
+[code](app.js)
 
 [code](./server/authServ.js)
 
