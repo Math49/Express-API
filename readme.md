@@ -58,6 +58,8 @@ voir Postman
 
 - **.env** : Fichier de configuration de l'API.
 
+[code](./server/authServ.js)
+
 ## Page dédiée chat avec Socket.io => en lien avec le DAB
 
 http://mathis.mercier.angers.mds-project.fr
